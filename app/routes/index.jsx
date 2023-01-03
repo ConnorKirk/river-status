@@ -54,6 +54,7 @@ const Board = ({ flow }) => {
 };
 
 const Tides = ({ events }) => {
+  console.log({ events });
   const nextHighTide = events.filter(
     ({ eventType, dateTime }) =>
       eventType === "HighWater" && new Date(dateTime) > new Date()
@@ -66,8 +67,8 @@ const Tides = ({ events }) => {
 
   return (
     <>
-      <p>Hightide is at {nextHighTide.dateTime}</p>
-      <p>Lowtide is at {nextLowTide.dateTime}</p>
+      {nextHighTide && <p>Hightide is at {nextHighTide.dateTime}</p>}
+      {nextLowTide && <p>Lowtide is at {nextLowTide.dateTime}</p>}
     </>
   );
 };
