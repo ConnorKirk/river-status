@@ -1,30 +1,75 @@
-import { useLoaderData } from "remix";
+import { useLoaderData } from "@remix-run/react";
+import { getFlowRate, getTideTime } from "~/loaders";
+import indexStyles from "~/styles/index.css";
 
 export const loader = async () => {
-  const resp = await fetch(
-    "https://environment.data.gov.uk/flood-monitoring/id/measures/3400TH-flow--i-15_min-m3_s"
-  );
+  const { flow, dateTime } = await getFlowRate();
+  const { events } = await getTideTime();
 
-  const body = await resp.json();
+  return { flow, dateTime, events };
+};
 
-  const flow = body.items.latestReading.value;
-  const dateTime = body.items.latestReading.dateTime;
-
-  return { flow, dateTime };
+export const links = () => {
+  return [{ rel: "stylesheet", href: indexStyles }];
 };
 
 export default function Index() {
-  const { flow, dateTime } = useLoaderData();
+  const { flow, dateTime, events } = useLoaderData();
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
-      <h1>What's the river status?</h1>
-      <span>
-        <h2>{flow} </h2>
-        <i>
-          m<sup>3</sup>/s
-        </i>{" "}
-        at {dateTime}
-      </span>
-    </div>
+    <Container>
+      <h1>What's the river doing?</h1>
+      <Flow flow={flow} dateTime={dateTime} />
+      <Board flow={flow} />
+      <Tides events={events} />
+    </Container>
   );
 }
+
+const Flow = ({ flow, dateTime }) => (
+  <>
+    <p>The stream is</p>
+    <div className="flow-measure">
+      <h2>{flow}</h2>
+      <i>
+        m<sup>3</sup>/s
+      </i>
+    </div>
+    at {dateTime}
+  </>
+);
+
+const Board = ({ flow }) => {
+  const getBoard = (flow) => {
+    if (flow >= 200) return "Red Boards ❌";
+    if (flow >= 160) return "Orange Boards 🟧";
+    if (flow >= 120) return "Yellow Boards ⚠️";
+    return "Clear Boards ✅";
+  };
+
+  return (
+    <div>
+      <p>This is {getBoard(flow)}</p>
+    </div>
+  );
+};
+
+const Tides = ({ events }) => {
+  const nextHighTide = events.filter(
+    ({ eventType, dateTime }) =>
+      eventType === "HighWater" && new Date(dateTime) > new Date()
+  )[0];
+
+  const nextLowTide = events.filter(
+    ({ eventType, dateTime }) =>
+      eventType === "LowWater" && new Date(dateTime) > new Date()
+  )[0];
+
+  return (
+    <>
+      <p>Hightide is at {nextHighTide.dateTime}</p>
+      <p>Lowtide is at {nextLowTide.dateTime}</p>
+    </>
+  );
+};
+
+const Container = ({ children }) => <div className="container">{children}</div>;
