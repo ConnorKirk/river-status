@@ -20,7 +20,7 @@ export default function Index() {
       <h1>What's the river doing?</h1>
       <Flow flow={flow} dateTime={dateTime} />
       <Board flow={flow} />
-      <Tides events={events} />
+      <Tides events={events} flow={flow} />
     </Container>
   );
 }
@@ -40,6 +40,7 @@ const Flow = ({ flow, dateTime }) => (
 
 const Board = ({ flow }) => {
   const getBoard = (flow) => {
+    if (flow >= 250) return "☠️☠️☠️ Very Red Boards ☠️☠️☠️";
     if (flow >= 200) return "Red Boards ❌";
     if (flow >= 160) return "Orange Boards 🟧";
     if (flow >= 120) return "Yellow Boards ⚠️";
@@ -48,13 +49,12 @@ const Board = ({ flow }) => {
 
   return (
     <div>
-      <p>This is {getBoard(flow)}</p>
+      <p>{getBoard(flow)}</p>
     </div>
   );
 };
 
-const Tides = ({ events }) => {
-  console.log({ events });
+const Tides = ({ events, flow }) => {
   const nextHighTide = events.filter(
     ({ eventType, dateTime }) =>
       eventType === "HighWater" && new Date(dateTime) > new Date()
@@ -66,10 +66,22 @@ const Tides = ({ events }) => {
   )[0];
 
   return (
-    <>
-      {nextHighTide && <p>Hightide is at {nextHighTide.dateTime}</p>}
-      {nextLowTide && <p>Lowtide is at {nextLowTide.dateTime}</p>}
-    </>
+      {nextHighTide && (
+        <>
+          <p>
+            Hightide is at {nextHighTide.dateTime}. Richmond Lock will open two
+            hours before and close two hours after.
+          </p>
+          <p>
+            The stream might be {flow - 100} between the lock opening and high
+            tide
+          </p>
+          <p>
+            The stream might be {flow + 60} between the high tide and the lock
+            closing
+          </p>
+        </>
+      )}
   );
 };
 
