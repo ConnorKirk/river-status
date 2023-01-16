@@ -1,6 +1,7 @@
 import { useLoaderData } from "@remix-run/react";
 import { getFlowRate, getTideTime } from "~/loaders";
 import indexStyles from "~/styles/index.css";
+import { Card } from "~/components";
 
 export const loader = async () => {
   const { flow, dateTime } = await getFlowRate();
@@ -21,12 +22,13 @@ export default function Index() {
       <Flow flow={flow} dateTime={dateTime} />
       <Board flow={flow} />
       <Tides events={events} flow={flow} />
+      {/* <Rules /> */}
     </Container>
   );
 }
 
 const Flow = ({ flow, dateTime }) => (
-  <>
+  <Card>
     <p>The stream is</p>
     <div className="flow-measure">
       <h2>{flow}</h2>
@@ -35,7 +37,7 @@ const Flow = ({ flow, dateTime }) => (
       </i>
     </div>
     at {dateTime}
-  </>
+  </Card>
 );
 
 const Board = ({ flow }) => {
@@ -48,9 +50,9 @@ const Board = ({ flow }) => {
   };
 
   return (
-    <div>
+    <Card>
       <p>{getBoard(flow)}</p>
-    </div>
+    </Card>
   );
 };
 
@@ -66,6 +68,7 @@ const Tides = ({ events, flow }) => {
   )[0];
 
   return (
+    <Card>
       {nextHighTide && (
         <>
           <p>
@@ -82,6 +85,7 @@ const Tides = ({ events, flow }) => {
           </p>
         </>
       )}
+    </Card>
   );
 };
 

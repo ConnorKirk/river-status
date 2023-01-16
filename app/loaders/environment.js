@@ -5,7 +5,7 @@ const getFlowRate = () => {
     .then((resp) => resp.json())
     .then((body) => ({
       flow: body.items?.latestReading?.value,
-      dateTime: body.items.latestReading.dateTime,
+      dateTime: new Date(body.items.latestReading.dateTime),
     }));
 };
 
