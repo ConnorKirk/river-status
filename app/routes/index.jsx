@@ -84,12 +84,14 @@ const Tides = ({ events, flow }) => {
             at {toPrettyTime(twoHoursAfter)}
           </p>
           <p>
-            The stream might be {flow - 100} between the lock opening and high
-            tide
+            The stream might be
+            <MetersPerSecond value={Math.floor(flow - 100)} /> between the lock
+            opening and high tide
           </p>
           <p>
-            The stream might be {flow + 60} between the high tide and the lock
-            closing
+            The stream might be
+            <MetersPerSecond value={Math.floor(flow + 60)} /> between the high
+            tide and the lock closing
           </p>
         </>
       )}
@@ -124,6 +126,13 @@ const Rules = () => (
       </li>
     </ol>
   </Card>
+);
+
+const MetersPerSecond = ({ value }) => (
+  <span>
+    {" "}
+    {value} m<sup>3</sup>/s
+  </span>
 );
 
 const Container = ({ children }) => <div className="container">{children}</div>;

@@ -1,14 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Recursive&display=swap'); 
 
-.container {
+html, body, #root {
+    height: 100%;
+
+  }
+
+.wrapper {
     max-width: 800px;
-    display: flex;
-    justify-content: center;
-    gap: 1em;
-    flex-direction: column;
-    align-items: center;
+    
     margin: auto;
 
+}
+
+.container {
+    display: flex;
+    justify-content: space-around;
+    gap: 1em;
+    flex-direction: column;
+    align-items: stretch;
+    flex-wrap: wrap;
 }
 
 .flow-measure {
@@ -17,9 +27,7 @@
     gap: 1em
 }
 
-.flow-measure > h2 {
-    font-size: 5em;
-}
+
 
 * {
     font-family: "Recursive, system-ui, sans-serif"; 
