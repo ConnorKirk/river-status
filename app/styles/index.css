@@ -26,3 +26,18 @@
     line-height: 1.4;
 
 }
+
+.card {
+    padding: 20px;
+    border-radius: 0.75rem;
+    border-width: 2px;
+    border-color: rgb(241 245 249);
+    border-style: solid;
+
+}
+
+.card h1 {
+    margin-top: 0px;
+    margin-left: 0px;
+    font-weight: 500;
+}
