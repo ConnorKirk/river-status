@@ -66,11 +66,12 @@ const Tides = ({ events, flow }) => {
     events.filter(
       ({ eventType, dateTime }) =>
         eventType === "HighWater" && new Date(dateTime) > new Date()
-    )[0].dateTime
+    )[0]?.dateTime
   );
 
+  console.log(nextHighTide);
+
   const twoHoursBefore = diffHours(nextHighTide, -2);
-  console.log(twoHoursBefore);
   const twoHoursAfter = diffHours(nextHighTide, 2);
 
   console.log({ nextHighTide, twoHoursBefore, t: typeof twoHoursBefore });
@@ -135,14 +136,17 @@ const MetersPerSecond = ({ value }) => (
   </span>
 );
 
-export const ErrorBoundary = ({ error }) => (
-  <Card>
-    <h1>Something went wrong</h1>
-    <p>Sorry! You should probably tell Connor</p>
-    <p>{error.message}</p>
-    <code>{error.stackTrace}</code>
-  </Card>
-);
+export const ErrorBoundary = ({ error }) =>
+  console.log(error) || (
+    <Card>
+      <h1>Something went wrong</h1>
+      <p>Sorry! You should probably tell Connor</p>
+      <p>{error.message}</p>
+      <code>
+        <pre>{error.stack}</pre>
+      </code>
+    </Card>
+  );
 
 
 const Container = ({ children }) => <div className="container">{children}</div>;

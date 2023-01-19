@@ -1,7 +1,7 @@
 const apiKey = process.env["ADMIRAL_API_KEY"];
 
 const getTideTime = async () => {
-  const duration = 1;
+  const duration = 2;
   const stationId = "0116";
   const url = `https://admiraltyapi.azure-api.net/uktidalapi/api/V1/Stations/${stationId}/TidalEvents?duration=${duration}`;
 
