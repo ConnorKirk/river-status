@@ -135,5 +135,15 @@ const MetersPerSecond = ({ value }) => (
   </span>
 );
 
+export const ErrorBoundary = ({ error }) => (
+  <Card>
+    <h1>Something went wrong</h1>
+    <p>Sorry! You should probably tell Connor</p>
+    <p>{error.message}</p>
+    <code>{error.stackTrace}</code>
+  </Card>
+);
+
+
 const Container = ({ children }) => <div className="container">{children}</div>;
 const Wrapper = ({ children }) => <div className="wrapper">{children}</div>;
