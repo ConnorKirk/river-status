@@ -132,7 +132,7 @@ const PooAlert = ({ pooStatuses }) => {
   const recentDumps = pooStatuses.filter((status) => status.alertPast24Hours);
 
   return (
-    <Card title={"Poo Alerts"}>
+    <Card title={"Poo Alerts 💩"}>
       {recentDumps.length > 0 ? (
         recentDumps.map(({ locationName }, i) => <p key={i}>{locationName}</p>)
       ) : (
