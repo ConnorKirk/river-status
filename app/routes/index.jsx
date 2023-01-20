@@ -1,5 +1,5 @@
 import { useLoaderData } from "@remix-run/react";
-import { getFlowRate, getTideTime } from "~/loaders";
+import { getFlowRate, getPooStatus, getTideTime } from "~/loaders";
 import indexStyles from "~/styles/index.css";
 import { toPrettyDatetime, toPrettyTime, diffHours } from "~/utils";
 import { Card } from "~/components";
@@ -8,8 +8,9 @@ import { json } from "@remix-run/node";
 export const loader = async () => {
   const { flow, dateTime } = await getFlowRate();
   const { events } = await getTideTime();
+  const { pooStatuses } = await getPooStatus();
 
-  return json({ flow, dateTime, events });
+  return json({ flow, dateTime, events, pooStatuses });
 };
 
 export const links = () => {
@@ -17,13 +18,14 @@ export const links = () => {
 };
 
 export default function Index() {
-  const { flow, dateTime, events } = useLoaderData();
+  const { flow, dateTime, events, pooStatuses } = useLoaderData();
   return (
     <Wrapper>
-      <h1>What's the river doing?</h1>
+      <h1 class="title">What's the river doing?</h1>
       <Container>
         <Flow flow={flow} dateTime={dateTime} />
         <Board flow={flow} />
+        <PooAlert pooStatuses={pooStatuses} />
         <Tides events={events} flow={flow} />
         {/* <Rules /> */}
       </Container>
@@ -69,12 +71,9 @@ const Tides = ({ events, flow }) => {
     )[0]?.dateTime
   );
 
-  console.log(nextHighTide);
-
   const twoHoursBefore = diffHours(nextHighTide, -2);
   const twoHoursAfter = diffHours(nextHighTide, 2);
 
-  console.log({ nextHighTide, twoHoursBefore, t: typeof twoHoursBefore });
   return (
     <Card title="Tides">
       {nextHighTide && (
@@ -129,6 +128,20 @@ const Rules = () => (
   </Card>
 );
 
+const PooAlert = ({ pooStatuses }) => {
+  const recentDumps = pooStatuses.filter((status) => status.alertPast24Hours);
+
+  return (
+    <Card title={"Poo Alerts"}>
+      {recentDumps.length > 0 ? (
+        recentDumps.map(({ locationName }, i) => <p key={i}>{locationName}</p>)
+      ) : (
+        <p>All Clear!</p>
+      )}
+    </Card>
+  );
+};
+
 const MetersPerSecond = ({ value }) => (
   <span>
     {" "}
@@ -137,7 +150,7 @@ const MetersPerSecond = ({ value }) => (
 );
 
 export const ErrorBoundary = ({ error }) =>
-  console.log(error) || (
+  console.error(error) || (
     <Card>
       <h1>Something went wrong</h1>
       <p>Sorry! You should probably tell Connor</p>
