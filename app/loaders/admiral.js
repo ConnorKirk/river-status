@@ -17,7 +17,11 @@ const getTideTime = async () => {
     )
     .then((events) => ({
       events,
-    }));
+    }))
+    .catch((err) => {
+      console.error(err);
+      throw Error(`Error in admiral loader: ${err}`);
+    });
 };
 
 export { getTideTime };

@@ -36,5 +36,8 @@ const helper = (location) => {
       locationName: LocationName,
       alertPast24Hours: AlertPast48Hours,
     }))
-    .catch((err) => console.error(err));
+    .catch((err) => {
+      console.error(err);
+      throw Error(`Error in thames water loader: ${err}`);
+    });
 };
