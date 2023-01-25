@@ -21,7 +21,7 @@ export default function Index() {
   const { flow, dateTime, events, pooStatuses } = useLoaderData();
   return (
     <Wrapper>
-      <h1 class="title">What's the river doing?</h1>
+      <h1 className="title">What's the river doing?</h1>
       <Container>
         <Flow flow={flow} dateTime={dateTime} />
         <Board flow={flow} />
