@@ -40,7 +40,8 @@ export default function Index() {
 const Flow = ({ flow, dateTime }) => {
   const now = new Date();
   const dt = new Date(dateTime);
-  const stale = now - dt > 30 * 60 * 1000;
+  const oneHour = 1000 * 60 * 60;
+  const stale = now - dt > oneHour;
 
   return (
     <Card title="Stream">
