@@ -17,6 +17,10 @@ export const links = () => {
   return [{ rel: "stylesheet", href: indexStyles }];
 };
 
+export const headers = () => {
+  return { "Cache-Control": "public, s-maxage=300" };
+};
+
 export default function Index() {
   const { flow, dateTime, events, pooStatuses } = useLoaderData();
   return (
@@ -33,19 +37,26 @@ export default function Index() {
   );
 }
 
-const Flow = ({ flow, dateTime }) => (
-  <Card title="Stream">
-    <h2>
-      {flow}
-      <i>
-        {" "}
-        m<sup>3</sup>/s
-      </i>
-    </h2>
+const Flow = ({ flow, dateTime }) => {
+  const now = new Date();
+  const dt = new Date(dateTime);
+  const stale = now - dt > 30 * 60 * 1000;
 
-    <span> at {toPrettyDatetime(new Date(dateTime))}</span>
-  </Card>
-);
+  return (
+    <Card title="Stream">
+      <h2>
+        {flow}
+        <i>
+          {" "}
+          m<sup>3</sup>/s
+        </i>
+      </h2>
+
+      <span> at {toPrettyDatetime(dt)}</span>
+      {stale && <p>⚠️ This measurement is stale. Please check conditions</p>}
+    </Card>
+  );
+};
 
 const Board = ({ flow }) => {
   const getBoard = (flow) => {
