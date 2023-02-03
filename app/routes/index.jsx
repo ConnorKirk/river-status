@@ -16,8 +16,6 @@ export const loader = async () => {
   const { pooStatuses } = pooStatus;
   const { events } = tideTimes;
 
-  console.log({ flow, dateTime, pooStatuses, events });
-
   return json({ flow, dateTime, events, pooStatuses });
 };
 
@@ -173,12 +171,15 @@ const MetersPerSecond = ({ value }) => (
 export const ErrorBoundary = ({ error }) =>
   console.error(error) || (
     <Card>
-      <h1>Something went wrong</h1>
+      <h1>Something went wrong 😅</h1>
       <p>Sorry! You should probably tell Connor</p>
-      <p>{error.message}</p>
-      <code>
-        <pre>{error.stack}</pre>
-      </code>
+      <details>
+        <summary>Show me the error message!</summary>
+        <p>{error.message}</p>
+        <code>
+          <pre>{error.stack}</pre>
+        </code>
+      </details>
     </Card>
   );
 
