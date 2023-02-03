@@ -6,9 +6,17 @@ import { Card } from "~/components";
 import { json } from "@remix-run/node";
 
 export const loader = async () => {
-  const { flow, dateTime } = await getFlowRate();
-  const { events } = await getTideTime();
-  const { pooStatuses } = await getPooStatus();
+  const [flowRate, pooStatus, tideTimes] = await Promise.all([
+    getFlowRate(),
+    getPooStatus(),
+    getTideTime(),
+  ]);
+
+  const { flow, dateTime } = flowRate;
+  const { pooStatuses } = pooStatus;
+  const { events } = tideTimes;
+
+  console.log({ flow, dateTime, pooStatuses, events });
 
   return json({ flow, dateTime, events, pooStatuses });
 };
@@ -23,6 +31,7 @@ export const headers = () => {
 
 export default function Index() {
   const { flow, dateTime, events, pooStatuses } = useLoaderData();
+
   return (
     <Wrapper>
       <h1 className="title">What's the river doing?</h1>
