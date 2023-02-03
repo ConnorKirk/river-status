@@ -53,11 +53,7 @@ const Flow = ({ flow, dateTime }) => {
   return (
     <Card title="Stream">
       <h2>
-        {flow}
-        <i>
-          {" "}
-          m<sup>3</sup>/s
-        </i>
+        <MetersPerSecond value={flow} />
       </h2>
 
       <span> at {toPrettyDatetime(dt)}</span>
