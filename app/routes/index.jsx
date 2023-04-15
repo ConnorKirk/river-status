@@ -110,12 +110,21 @@ const Rules = () => (
 );
 
 const PooAlert = ({ pooStatuses }) => {
-  const recentDumps = pooStatuses.filter((status) => status.alertPast24Hours);
+  const recentDumps = [
+    ...pooStatuses.filter((status) => status.alertPast24Hours),
+    { locationName: "Twickenham Embankment (leaking pipe)" }, // Hardcoded. Monitor not working
+  ];
 
   return (
     <Card title={"Poo Alerts 💩"}>
       {recentDumps.length > 0 ? (
-        recentDumps.map(({ locationName }, i) => <p key={i}>{locationName}</p>)
+        <ul>
+          {recentDumps.map(({ locationName }, i) => (
+            <li key={i}>
+              <p>{locationName}</p>
+            </li>
+          ))}
+        </ul>
       ) : (
         <p>All Clear!</p>
       )}
