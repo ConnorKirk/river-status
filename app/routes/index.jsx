@@ -1,8 +1,8 @@
 import { useLoaderData } from "@remix-run/react";
 import { getFlowRate, getPooStatus, getTideTime } from "~/loaders";
 import indexStyles from "~/styles/index.css";
-import { toPrettyDatetime, toPrettyTime, diffHours } from "~/utils";
-import { Card } from "~/components";
+import { toPrettyTime, diffHours } from "~/utils";
+import { Card, FlowCard, MetersPerSecond, BoardCard } from "~/components";
 import { json } from "@remix-run/node";
 
 export const loader = async () => {
@@ -34,8 +34,8 @@ export default function Index() {
     <Wrapper>
       <h1 className="title">What's the river doing?</h1>
       <Container>
-        <Flow flow={flow} dateTime={dateTime} />
-        <Board flow={flow} />
+        <FlowCard flow={flow} dateTime={dateTime} />
+        <BoardCard flow={flow} />
         <PooAlert pooStatuses={pooStatuses} />
         <Tides events={events} flow={flow} />
         {/* <Rules /> */}
@@ -43,40 +43,6 @@ export default function Index() {
     </Wrapper>
   );
 }
-
-const Flow = ({ flow, dateTime }) => {
-  const now = new Date();
-  const dt = new Date(dateTime);
-  const oneHour = 1000 * 60 * 60;
-  const stale = now - dt > oneHour;
-
-  return (
-    <Card title="Stream">
-      <h2>
-        <MetersPerSecond value={flow} />
-      </h2>
-
-      <span> at {toPrettyDatetime(dt)}</span>
-      {stale && <p>⚠️ This measurement is stale. Please check conditions</p>}
-    </Card>
-  );
-};
-
-const Board = ({ flow }) => {
-  const getBoard = (flow) => {
-    if (flow >= 250) return "☠️☠️☠️ Very Red Boards ☠️☠️☠️";
-    if (flow >= 200) return "Red Boards ❌";
-    if (flow >= 160) return "Orange Boards 🟧";
-    if (flow >= 120) return "Yellow Boards ⚠️";
-    return "Clear Boards ✅";
-  };
-
-  return (
-    <Card title={"Boards"}>
-      <p>{getBoard(flow)}</p>
-    </Card>
-  );
-};
 
 const Tides = ({ events, flow }) => {
   const nextHighTide = new Date(
@@ -157,13 +123,6 @@ const PooAlert = ({ pooStatuses }) => {
   );
 };
 
-const MetersPerSecond = ({ value }) => (
-  <span>
-    {" "}
-    {value} m<sup>3</sup>/s
-  </span>
-);
-
 export const ErrorBoundary = ({ error }) =>
   console.error(error) || (
     <Card>
@@ -178,7 +137,6 @@ export const ErrorBoundary = ({ error }) =>
       </details>
     </Card>
   );
-
 
 const Container = ({ children }) => <div className="container">{children}</div>;
 const Wrapper = ({ children }) => <div className="wrapper">{children}</div>;
