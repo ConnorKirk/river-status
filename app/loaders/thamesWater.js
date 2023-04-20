@@ -34,7 +34,7 @@ const helper = (location) => {
     .then(({ items }) => items)
     .then(([{ LocationName, AlertPast48Hours }, _]) => ({
       locationName: LocationName,
-      alertPast24Hours: AlertPast48Hours,
+      alertPast24Hours: AlertPast48Hours ?? false,
     }))
     .catch((err) => {
       console.error(err);
