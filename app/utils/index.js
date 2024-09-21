@@ -17,3 +17,10 @@ export const diffHours = (dt, diff) => {
   copy.setHours(copy.getHours() + diff);
   return copy;
 };
+
+export const checkForStatus = (response) => {
+  if (response.status >= 200 && response.status < 300) {
+    return response;
+  }
+  throw Error(`HTTP error: ${response.statusText}`);
+};

@@ -1,5 +1,12 @@
 const apiKey = process.env["ADMIRAL_API_KEY"];
 
+const checkForStatus = (response) => {
+  if (response.status >= 200 && response.status < 300) {
+    return response;
+  }
+  throw Error(`HTTP error: ${response.statusText}`);
+};
+
 const getTideTime = async () => {
   const duration = 2;
   const stationId = "0116";
@@ -7,6 +14,7 @@ const getTideTime = async () => {
 
   const headers = { "Ocp-Apim-Subscription-Key": apiKey };
   return fetch(url, { headers })
+    .then(checkForStatus)
     .then((resp) => resp.json())
     .then((events) =>
       events.map(({ EventType, DateTime, Height }) => ({
