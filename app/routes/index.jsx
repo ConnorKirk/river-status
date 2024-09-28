@@ -45,21 +45,28 @@ export default function Index() {
 }
 
 const Tides = ({ events, flow }) => {
-	const nextHighTide = new Date(
+	const firstHighTide = new Date(
 		events.filter(
 			({ eventType, dateTime }) =>
 				eventType === "HighWater" && new Date(dateTime) > new Date(),
 		)[0]?.dateTime,
 	);
 
-	const twoHoursBefore = diffHours(nextHighTide, -2);
-	const twoHoursAfter = diffHours(nextHighTide, 2);
+	const twoHoursBefore = diffHours(firstHighTide, -2);
+	const twoHoursAfter = diffHours(firstHighTide, 2);
+
+	const secondHighTide = new Date(
+		events.filter(
+			({ eventType, dateTime }) =>
+				eventType === "HighWater" && new Date(dateTime) > new Date(),
+		)[1]?.dateTime,
+	);
 
 	return (
 		<Card title="Tides">
-			{nextHighTide && (
+			{firstHighTide && (
 				<>
-					<p>Hightide is at {toPrettyTime(nextHighTide)}.</p>
+					<p>Hightide is at {toPrettyTime(firstHighTide)}.</p>
 					<p>
 						Richmond Lock will open at {toPrettyTime(twoHoursBefore)} and close
 						at {toPrettyTime(twoHoursAfter)}
@@ -75,6 +82,9 @@ const Tides = ({ events, flow }) => {
 						tide and the lock closing
 					</p>
 				</>
+			)}
+			{secondHighTide && (
+				<p>The following hightide will be {toPrettyTime(secondHighTide)}</p>
 			)}
 		</Card>
 	);
@@ -113,8 +123,6 @@ const PooAlert = ({ pooStatuses }) => {
 	const recentDumps = [
 		...pooStatuses.filter((status) => status.alertPast48Hours),
 	];
-
-	console.log({ pooStatuses });
 
 	return (
 		<Card title={"Poo Alerts 💩"}>
