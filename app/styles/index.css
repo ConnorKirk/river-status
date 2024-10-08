@@ -3,14 +3,15 @@
 html, body, #root {
     height: 100%;
     margin: 0;
-
-  }
+    background: linear-gradient(to right, #ece9e6, #ffffff);
+    font-family: "Recursive", system-ui, sans-serif;
+    line-height: 1.4;
+}
 
 .wrapper {
     max-width: 800px;
-    padding: 10px;
+    padding: 20px;
     margin: auto;
-
 }
 
 .container {
@@ -23,45 +24,43 @@ html, body, #root {
 }
 
 @media (max-width: 700px) {
-    .container{
+    .container {
         grid-template-columns: auto;
     }
-  }
+}
 
 h1.title {
     display: flex;
     justify-content: center;
-    margin-top: 10px;
+    margin-top: 20px;
+    font-size: 2em;
+    color: #333;
 }
-  
-
-
 
 .flow-measure {
     display: flex;
     align-items: baseline;
-    gap: 1em
-}
-
-
-
-* {
-    font-family: "Recursive, system-ui, sans-serif"; 
-    line-height: 1.4;
-
+    gap: 1em;
 }
 
 .card {
     padding: 20px;
     border-radius: 0.75rem;
     border-width: 2px;
-    border-color: rgb(241 245 249);
+    border-color: rgb(241, 245, 249);
     border-style: solid;
-
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
 }
 
 .card h1 {
-    margin-top: 0px;
-    margin-left: 0px;
+    margin-top: 0;
+    margin-left: 0;
     font-weight: 500;
+    font-size: 1.5em;
+    color: #444;
+}
+
+* {
+    box-sizing: border-box;
 }
