@@ -39,6 +39,7 @@ export default function Index() {
 				<PooAlert pooStatuses={pooStatuses} />
 				<Tides events={events} flow={flow} />
 				{/* <Rules /> */}
+				<Footer />
 			</Container>
 		</Wrapper>
 	);
@@ -158,3 +159,12 @@ export const ErrorBoundary = ({ error }) =>
 
 const Container = ({ children }) => <div className="container">{children}</div>;
 const Wrapper = ({ children }) => <div className="wrapper">{children}</div>;
+
+
+const Footer = () => (
+	<footer>
+		<p>
+			Got feedback? <a href="mailto:status@ckp.fyi">Send me an email</a>
+		</p>
+	</footer>
+)
