@@ -27,6 +27,19 @@ export const headers = () => {
   return { "Cache-Control": "public, s-maxage=300" };
 };
 
+export const meta = ({ data }) => {
+  const { flow } = data;
+  return {
+    charset: "utf-8",
+    "og:image": "",
+    "og:title": "What's the river doing?",
+    "og:description": `The stream is ${flow}`,
+    title: "What's the river doing?",
+    description: `The stream is ${flow}`,
+    viewport: "width=device-width,initial-scale=1",
+  };
+};
+
 export default function Index() {
   const { flow, dateTime, events, pooStatuses } = useLoaderData();
 
