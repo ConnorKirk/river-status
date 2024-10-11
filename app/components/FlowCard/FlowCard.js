@@ -7,10 +7,18 @@ export const FlowCard = ({ flow, dateTime }) => {
   const oneHour = 1000 * 60 * 60;
   const stale = now - dt > oneHour;
 
+  const getBoard = (flow) => {
+    if (flow >= 250) return "☠️";
+    if (flow >= 200) return "❌";
+    if (flow >= 160) return "🟧";
+    if (flow >= 120) return "⚠️";
+    return "✅";
+  };
+
   return (
     <Card title="Stream">
       <h2>
-        <MetersPerSecond value={flow} />
+        <MetersPerSecond value={flow} /> {getBoard(flow)}
       </h2>
 
       <span> at {toPrettyDatetime(dt)}</span>
