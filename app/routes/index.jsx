@@ -46,15 +46,21 @@ export default function Index() {
 }
 
 const Tides = ({ events, flow }) => {
+  const now = new Date();
+
+  //
   const firstHighTide = new Date(
     events.filter(
       ({ eventType, dateTime }) =>
-        eventType === "HighWater" && new Date(dateTime) > new Date()
+        eventType === "HighWater" &&
+        new Date(dateTime) > now.setHours(now.getHours() - 2)
     )[0]?.dateTime
   );
 
   const twoHoursBefore = diffHours(firstHighTide, -2);
   const twoHoursAfter = diffHours(firstHighTide, 2);
+
+  const isEbbTide = now > firstHighTide && now < twoHoursAfter;
 
   const secondHighTide = new Date(
     events.filter(
@@ -65,31 +71,33 @@ const Tides = ({ events, flow }) => {
 
   return (
     <Card title="Tides">
-      {firstHighTide && (
-        <>
+      <>
+        {isEbbTide ? (
+          <p>Hightide was at {toPrettyTime(firstHighTide)}</p>
+        ) : (
           <p>Hightide is at {toPrettyTime(firstHighTide)}.</p>
-          <p>
-            Richmond Lock will open at {toPrettyTime(twoHoursBefore)} and close
-            at {toPrettyTime(twoHoursAfter)}
-          </p>
-          <p>
-            The stream might be
-            <MetersPerSecond value={Math.floor(flow - 100)} /> between the lock
-            opening and high tide
-          </p>
-          <p>
-            The stream might be
-            <MetersPerSecond value={Math.floor(flow + 60)} /> between the high
-            tide and the lock closing
-          </p>
-        </>
-      )}
+        )}
+        <p>
+          Richmond Lock will open at {toPrettyTime(twoHoursBefore)} and close at{" "}
+          {toPrettyTime(twoHoursAfter)}
+        </p>
+        <p>
+          The stream might be
+          <MetersPerSecond value={Math.floor(flow - 100)} /> between the lock
+          opening and high tide
+        </p>
+        <p>
+          The stream might be
+          <MetersPerSecond value={Math.floor(flow + 60)} /> between the high
+          tide and the lock closing
+        </p>
+      </>
       {secondHighTide && (
         <p>The following hightide will be {toPrettyTime(secondHighTide)}</p>
       )}
     </Card>
   );
-};
+};;
 
 const PooAlert = ({ pooStatuses }) => {
   const recentDumps = [
@@ -146,7 +154,7 @@ const Wrapper = ({ children }) => <div className="wrapper">{children}</div>;
 const Footer = () => (
   <footer>
     <p>
-      Got feedback? <a href="mailto:status@ckp.fyi">Send me an email</a>
+      Got feedback? <a href="mailto:status@ckp.fyi">Send me an email</a>{" "}
     </p>
   </footer>
 );
