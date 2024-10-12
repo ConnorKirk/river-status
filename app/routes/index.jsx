@@ -51,7 +51,6 @@ export default function Index() {
         <PooAlert pooStatuses={pooStatuses} />
         <Tides events={events} flow={flow} />
         <Notes />
-        {/* <Rules /> */}
         <Footer />
       </Container>
     </Wrapper>
@@ -61,12 +60,10 @@ export default function Index() {
 const Tides = ({ events, flow }) => {
   const now = new Date();
 
-  //
   const firstHighTide = new Date(
     events.filter(
       ({ eventType, dateTime }) =>
-        eventType === "HighWater" &&
-        new Date(dateTime) > now.setHours(now.getHours() - 2)
+        eventType === "HighWater" && new Date(dateTime) > diffHours(now, -2)
     )[0]?.dateTime
   );
 
@@ -86,7 +83,10 @@ const Tides = ({ events, flow }) => {
     <Card title="Tides">
       <>
         {isEbbTide ? (
-          <p>Hightide was at {toPrettyTime(firstHighTide)}</p>
+          <>
+            <p>Hightide was at {toPrettyTime(firstHighTide)}</p>
+            <b>The lock is open</b>
+          </>
         ) : (
           <p>Hightide is at {toPrettyTime(firstHighTide)}.</p>
         )}
