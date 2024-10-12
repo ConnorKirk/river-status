@@ -81,30 +81,36 @@ const Tides = ({ events, flow }) => {
 
   return (
     <Card title="Tides">
-      <>
-        {isEbbTide ? (
-          <>
-            <p>Hightide was at {toPrettyTime(firstHighTide)}</p>
-            <b>The lock is open</b>
-          </>
-        ) : (
+      {isEbbTide ? (
+        <>
+          <p>Hightide was at {toPrettyTime(firstHighTide)}</p>
+          <b>The lock is open</b>
+          <p>Richmond Lock will close at {toPrettyTime(twoHoursAfter)}</p>
+          <p>
+            The stream might be
+            <MetersPerSecond value={Math.floor(flow + 60)} /> between the high
+            tide and the lock closing
+          </p>
+        </>
+      ) : (
+        <>
           <p>Hightide is at {toPrettyTime(firstHighTide)}.</p>
-        )}
-        <p>
-          Richmond Lock will open at {toPrettyTime(twoHoursBefore)} and close at{" "}
-          {toPrettyTime(twoHoursAfter)}
-        </p>
-        <p>
-          The stream might be
-          <MetersPerSecond value={Math.floor(flow - 100)} /> between the lock
-          opening and high tide
-        </p>
-        <p>
-          The stream might be
-          <MetersPerSecond value={Math.floor(flow + 60)} /> between the high
-          tide and the lock closing
-        </p>
-      </>
+          <p>
+            Richmond Lock will open at {toPrettyTime(twoHoursBefore)} and close
+            at {toPrettyTime(twoHoursAfter)}
+          </p>
+          <p>
+            The stream might be
+            <MetersPerSecond value={Math.floor(flow - 100)} /> between the lock
+            opening and high tide
+          </p>
+          <p>
+            The stream might be
+            <MetersPerSecond value={Math.floor(flow + 60)} /> between the high
+            tide and the lock closing
+          </p>
+        </>
+      )}
       {secondHighTide && (
         <p>The following hightide will be {toPrettyTime(secondHighTide)}</p>
       )}
