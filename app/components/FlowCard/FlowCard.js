@@ -20,8 +20,9 @@ export const FlowCard = ({ flow, dateTime }) => {
       <h2>
         <MetersPerSecond value={flow} /> {getBoard(flow)}
       </h2>
+      <p>by Kingston Bridge</p>
 
-      <span> at {toPrettyDatetime(dt)}</span>
+      <p> at {toPrettyDatetime(dt)}</p>
       {stale && <p>⚠️ This measurement is stale. Please check conditions</p>}
     </Card>
   );
