@@ -19,7 +19,7 @@ const getTideTime = async () => {
     .then((events) =>
       events.map(({ EventType, DateTime, Height }) => ({
         eventType: EventType,
-        dateTime: new Date(DateTime),
+        dateTime: new Date(`${DateTime}Z`),
         height: Height,
       }))
     )
