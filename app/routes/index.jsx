@@ -121,8 +121,8 @@ const PooAlert = ({ pooStatuses }) => {
     <Card title={"Poo Alerts 💩"}>
       {recentDumps.length > 0 ? (
         <ul>
-          {recentDumps.map(({ locationName }, i) => (
-            <li key={i}>
+          {recentDumps.map(({ locationName }) => (
+            <li key={locationName}>
               <p>{locationName}</p>
             </li>
           ))}
