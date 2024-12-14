@@ -8,7 +8,7 @@ const locations = [
   "Kingston Main",
   "Portsmouth Road, Uxbridge Road",
   "Mogden",
-  "Hammersmith",
+  // "Hammersmith",
 ];
 const base = "https://prod-tw-opendata-app.uk-e1.cloudhub.io";
 const path = "/data/STE/v1/DischargeCurrentStatus";
@@ -23,7 +23,7 @@ export const getPooStatus = () => {
         p.status === "fulfilled" ? [p] : console.warn(`${p.reason}`)
       )
     )
-    .then((arr) => arr.map(({ value }) => value))
+    .then((arr) => console.log({ arr }) || arr.map(({ value }) => value))
     .then((pooStatuses) => ({ pooStatuses }))
     .catch(console.error);
 };
